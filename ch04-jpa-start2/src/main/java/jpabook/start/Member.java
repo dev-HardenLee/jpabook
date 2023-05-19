@@ -20,8 +20,10 @@ public class Member {
 	//	- IDENTITY : 기본 키 생성을 데이터베이스에 위임.
 	//	- SEQUENCE : 데이터베이스 시퀀스를 사용해서 기본 키를 할당한다.
 	//	- TABLE    : 키 생성 테이블을 사용한다.
+	//	- AUTO     : 선택한 데이터베이스에 따라 IDENTITY, SEQUENCE, TABLE 전량 중 하나를 자동으로 선택한다.
 	// * SEQUENCE나 IDENTITY경우에는 사용하는 데이터베이스에 의존한다.
 	// * 자동 생성 전략을 사용하려면 @Id에 @GeneratedValue를 추가하고 원하는 키 생성 전략을 선택한다.
+	// * @GeneratedValue의 기본 전략은 AUTO이다.
     @Id
     @Column(name = "ID")
     private String id;
@@ -31,7 +33,7 @@ public class Member {
     // 속성 : 1.nullable - false로 설정하면 not null 제약조건을 추가할 수 있다.
     //	     2. length - 문자의 크기를 지정할 수 있다. 
     private String username;
-
+    
     private Integer age;
 
     //=== 추가
@@ -58,7 +60,7 @@ public class Member {
     @Lob
     private String description;
 
-    @Transient
+    @Transient // @Transient는 해당 필드를 데이터베이스에 매핑하지 않는다.
     private String temp;
 
 
