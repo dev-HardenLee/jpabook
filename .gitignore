@@ -92,4 +92,4 @@ crashlytics.properties
 crashlytics-build.properties
 
 # target class ignore
-.class
+*/target/*
