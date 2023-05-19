@@ -18,7 +18,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;      //주문 회원
+    private Member member;      //주문 회원 * 연관관계의 주인
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();

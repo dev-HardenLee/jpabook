@@ -20,6 +20,7 @@ public class Member {
     private String street;
     private String zipcode;
 
+    // mappedBy 속성은 연관관계의 주인이 아님을 나타낸다.
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
 
