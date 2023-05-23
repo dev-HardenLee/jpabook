@@ -16,11 +16,14 @@ public class Order extends BaseEntity {
     @GeneratedValue
     @Column(name = "ORDER_ID")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)  //**
+    
+    // fetch = FetchType.EAGER : 즉시로딩
+    // fetch = FetchType.LAZY  : 지연로딩
+    @ManyToOne(fetch = FetchType.LAZY)  //** 
     @JoinColumn(name = "MEMBER_ID")
     private Member member;      //주문 회원
-
+    
+    // cascade = 영속성 전이 설정.
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)    //**
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
