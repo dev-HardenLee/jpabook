@@ -14,19 +14,26 @@
         <property name="username" value="sa"/>
         <property name="password" value=""/>
     </bean>
-
+	
+	<!-- 기존에는 DataSourceTransactionManager를 트랜잭션 관리자로 사용하지만 JPA를 사용하려면 JpaTransactionManager로 등록해야한다. -->
+	<!-- 이 트랜잭션 관리자는 DataSourceTransactionManager가 하던 역할도 수행하므로 JPA뿐만 아니라 JdbcTemplate, Mybatis와 함께 사용할 수 있다. -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- JPA 예외를 스프링 예외로 변환 -->
+    <!-- JPA 예외를 스프링 프레임워크가 추상화한 예외로 변환 -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	
+	<!-- 스프링 프레임워크에서 JPA를 사용하려면 LocalContainerEntityManagerFactoryBean을 스프링 빈으로 등록해야한다. -->
+	<!-- 순수하게 자바만 사용하는 J2SE환경에서는 persistence.xml에 엔티티 매니저 팩토리 정보를 설정하지만, 스프링 프레임워크에서 JPA를 사용하려면 -->
+	<!-- 스프링 프레임워크가 제공하는 방식으로 엔티티 매니저 팩토리를 등록해야한다. -->
+	<!-- persistenceUnitName 속성을 사용해서 영속성 유닛 이름을 지정하면 persistence.xml에 대한 정보도 사용할 수 있다. -->
+	<!-- persistenceUnitName 속성을 지정하지 않으면 default라는 이름의 영속성 유닛을 생성한다. -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> <!-- JPA를 스프링컨테이너에서 사용할 수 있도록 스프링 프레임워크가 제공해줌. spring-orm라이브러리에서 제공됨. -->
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="jpabook.jpashop.domain"/> <!-- @Entity 탐색 시작 위치 -->
         <property name="jpaVendorAdapter">
-            <!-- 하이버네이트 구현체 사용 -->
+            <!-- JPA 구현체를 지정한다. 예제에서는 하이버네이트 구현체 사용 -->
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
         <property name="jpaProperties"> <!-- 하이버네이트 상세 설정 -->
@@ -37,6 +44,9 @@
                 <prop key="hibernate.use_sql_comments">true</prop>           <!-- SQL 코멘트 보기 -->
                 <prop key="hibernate.id.new_generator_mappings">true</prop>  <!-- 새 버전의 ID 생성 옵션 -->
                 <prop key="hibernate.hbm2ddl.auto">create</prop>             <!-- DDL 자동 생성 -->
+                <!-- 하이버네이트 SQL로그를 콘솔이 아닌 로거를 통해 남기려면 logback.xml에서 다음과 같이 설정해야한다. 이렇게 로거를 설정하면 hibernate.show_sql옵션을 꺼야 콘솔에 로그가 중복 출력되지 않는다. -->
+                <!-- org.hibernate.SQL  : hibernate.show_sql 속성과 거의 같은 로그를 남긴다. -->
+                <!-- org.hibernate.type : 실행된 SQL에 바인딩된 파라미터 정보를 로그로 남긴다. -->
             </props>
         </property>
     </bean>

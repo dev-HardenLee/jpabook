@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 2013. 12. 3. Time: 오전 1:07
  */
 @Service
-@Transactional
+@Transactional // Class에 @Transactional을 붙이면 외부에서 이 클래스의 메소드를 호출할 때 트랜잭션을 시작하고, 메소드를 종료할 때 트랜잭션을 커밋한다. 예외 발생시 트랜잭션 롤백.
 public class MemberService {
 
     @Autowired
@@ -23,7 +23,6 @@ public class MemberService {
      * 회원 가입
      */
     public Long join(Member member) {
-
         validateDuplicateMember(member); //중복 회원 검증
         memberRepository.save(member);
         return member.getId();
@@ -31,6 +30,7 @@ public class MemberService {
 
     private void validateDuplicateMember(Member member) {
         List<Member> findMembers = memberRepository.findByName(member.getName());
+        
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
