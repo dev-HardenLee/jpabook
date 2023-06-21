@@ -1,0 +1,10 @@
+
+
+
+1. 테스트 클래스에 @Transactional을 명시하면, 테스트의 각각의 메소드를 실행할 때 영속성 컨텍스트가 생성되고 테스트가 종료될 때 영속성 컨텍스트가 종료된다.
+   테스트 클래스가 끝나면 @Transactional 어노테이션에 의해 트랜잭션을 커밋하지 않고 롤백한다. 그래야 데이터베이스에 영향을 주지 않고 테스트를 수행할 수 있기 때문이다.
+   만약 테스트에도 @Transactional이 있고, 서비스에도 @Transactional이 있으면, 먼저 만나게 되는 @Transactional을 기준으로 영속성컨텍스트가 작동한다.
+
+2. 테스트 클래스에 @Transactional을 명시하지 않으면, Service 계층에서 @Transactional만나게 되거나 Repository 계층에서 @Transactional을 만나게되는
+   기준으로 영속성 컨텍스트가 생성된다.
+   

@@ -1,0 +1,10 @@
+
+
+
+1. @Converter
+
+	- 컨버터를 사용하면 엔티티의 데이터를 변환해서 데이터베이스에 저장할 수 있다.
+	- 클래스를 생성한 후, AttributeConverter인터페이스를 구현해야한다. 제네릭으로는 <현재 자바 타입, DB에 저장할 타입>을 선언해주면 된다.
+	- 클래스에 @Converter 어노테이션을 선언해준다.
+	- 대상 필드에 @Convert 어노테이션을 선언한 후, converter인자에 구현한 Converter 클래스를 명시한다.
+	- 구현한 @Converter 클래스를 모든 타입에 적용하려면, @Converter의 autoApply인자에 true옵션을 적용한다.

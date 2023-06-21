@@ -1,0 +1,26 @@
+
+1. 엔티티 그래프
+
+	- 주문 상태를 검색조건으로 주문 엔티티를 조회하는 JPQL
+		SELECT o FROM Order o WHERE 1=1 AND o.status = ?
+	
+	- 주문과 회원을 함께 조회하는 JPQL
+		 SELECT o FROM Order o JOIN FETCH o.member WHERE 1=1 AND o.status = ?
+		
+	- 주문과 주문상품을 함꼐 조회하는 JPQL
+		SELECT o FROM Order o JOIN FETCH o.ordeItems WHERE 1=1 AND o.status = ?
+	
+	- 3가지 JPQL 모두 주문을 조회하는 값은 JPQL이지만, 함께 조회할 엔티티에 따라 다른 JPQL을 사용해야한다.
+	- 이는 JPQL이 데이터를 조회하는 기능뿐만 아니라 연관된 엔티티를 함께 조회하는 기능도 제공하기 때문인데, 결국 JPQL이 두가지 역할을 모두 수행해서 발생하는 문제이다.
+	- 엔티티 그래프를 사용하면 함께 조회할 연관된 엔티티를 선택할 수 있다.
+	- 엔티티 그래프 기능은 엔티티 조회시점에 연관된 엔티티들을 함꼐 조회하는 기능이다.
+	
+	1. 정적으로 정의하는 Named 엔티티 그래프
+		- @NamedEntityGraph 어노테이션을 명시한다.
+			- name 속성       : 엔티티그래프의 이름을 정의한다.
+			- attributeNodes : 함께 조회할 속성을 선택한다. 이 때 @NamedAttributeNode를 사용하고 그 값으로 함꼐 조회할 속성을 선택한다.
+			- 둘 이상 정의하려면 @NamedEntityGraphs를 사용하면 된다. 
+	
+	2. 동적으로 정의하는 엔티티 그래프
+		- createEntityGraph()메소드를 사용하면 된다.
+
