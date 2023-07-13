@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +28,10 @@ public class MemberRepositoryTest {
 	private MemberRepository memberRepository;
 	
 	@Test
-//	@Rollback(value = true)
+	@Rollback(value = true)
 	@Ignore
 	public void dummyInsert() {
-		for(int i=0; i<476; i++) {
+		for(int i=0; i<501; i++) {
 			Member member = new Member();
 			Address address = new Address("대전광역시", "청사로", "254");
 			
@@ -43,8 +44,9 @@ public class MemberRepositoryTest {
 	}// dummyInsert
 
 	@Test
+//	@Ignore
 	public void pagingTest() {
-		PageRequest pageRequest = new PageRequest(0, 10, new Sort(Direction.DESC, "id"));
+		PageRequest pageRequest = new PageRequest(1, 10, new Sort(Direction.DESC, "id"));
 		
 		Page<Member> pageResult = memberRepository.findByNameStartingWith("member_1", pageRequest);
 		
@@ -67,6 +69,10 @@ public class MemberRepositoryTest {
 		System.out.println("hasNextPage       : " + hasNextPage      );
 		System.out.println("nextPageable      : " + nextPageable     );
 		System.out.println("previousePageable : " + previousePageable);
+		
+		for (Member member : memberResult) {
+			System.out.println(member);
+		}// for
 		
 		// 총 페이지 = Math.ceil(페이지 크기 / 전체 데이터 갯수)
 		// 끝 페이지 = Math.ceil(현재 페이지 / 페이지 블록 크기) * 페이지 블록 크기
